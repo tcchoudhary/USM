@@ -1,59 +1,41 @@
 const express = require('express');
-const userController = require('../controllers/userControllers');
-const userRoute = express();
-const session = require('express-session');
-const config = require('../config/config');
-//it is use for story user login data in session
-userRoute.use(session({secret:config.sessionScrete}));
-//it is use for authentication meddeleware
-const auth = require('../middleware/auth');
-//it is use for form data decode 
-userRoute.use(express.urlencoded({extended:true}));
-userRoute.use(express.json());
-//set view engine
-userRoute.set('view engine','ejs');
-//define views folder directory
-userRoute.set('views','./views/users');
-//use for static file =>exp = css clientside js photo
-userRoute.use(express.static('public'));
-const path =require('path');
-//it is use for form image access
+const auth = require('../middlewears/auth')
+const user_route = express();
+user_route.use(express.json());
+user_route.use(express.urlencoded({extended:true}))
+user_route.set('view engine', 'ejs')
+user_route.use(express.static('public'))
+const path = require('path');
 const multer = require('multer');
-const storage = multer.diskStorage({
-    destination:(req,file,cb)=>{
-    const userImgPath = path.join(__dirname,'../public/user_img');
-    cb(null,userImgPath)
-    },
-    filename:(req,file,cb)=>{
-    const filename = Date.now()+'-'+file.originalname;
-    cb(null,filename)
-    }
-});
+const session= require('express-session');
+const {SESSION_SECRET}= process.env;
+user_route.use(session({secret:SESSION_SECRET}));
+const cockie = require('cookie-parser');
+user_route.use(cockie());
+const UserControllers = require('../controllers/UserControllers');
 
+
+const storage = multer.diskStorage({
+    destination:((req,file,cb)=>{
+        cb(null,path.join(__dirname ,'../public/img'));
+    }),
+    filename:((req,file,cb)=>{
+        const name = Date.now()+'-'+file.originalname;
+        cb(null,name)
+    })
+});
 const upload = multer({storage:storage});
 
 
 
-
-//for Route
-userRoute.get('/',auth.islogin,userController.loadHome);
-userRoute.get('/register',auth.islogout,userController.loadRegister);
-userRoute.post('/register',upload.single('image'),userController.insertUser);
-userRoute.get('/verify',userController.verifyMail);
-userRoute.get('/login',auth.islogout,userController.loadLogin);
-userRoute.post('/login',userController.login);
-userRoute.get('/logout',auth.islogin,userController.userLogout);
-userRoute.get('/forget',auth.islogout,userController.loadforget);
-userRoute.post('/forget',userController.forget);
-userRoute.get('/forget-pass',auth.islogout,userController.forgetpasswordload);
-userRoute.post('/forget-pass',userController.resetpasswordmethod);
-userRoute.get('/404',userController.notfound);
-
-userRoute.get('/edit',auth.islogin,userController.loadedit);
-userRoute.post('/edit',upload.single('image'),userController.editprofile);
-userRoute.get('/delete',auth.islogin,userController.deleteUser);
-// userRoute.get('/*',userController.universal);
-
-
-//export this file for use route in app.js file
-module.exports = userRoute;
+user_route.get('/register',UserControllers.registerLoad);
+user_route.post('/register',upload.single('image'),UserControllers.register)
+user_route.get('/login',UserControllers.loadlogin);
+user_route.post('/login',UserControllers.login);
+user_route.get('/logout',auth.islogin,UserControllers.logout);
+user_route.get('/',UserControllers.loaddashboard);
+user_route.post('/save-chat',UserControllers.Savechat);
+user_route.post('/delete-chat',UserControllers.deleteChat);
+// user_route.get('/chat',UserControllers.loadchat);
+module.exports = user_route;
+ 
