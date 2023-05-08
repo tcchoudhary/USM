@@ -1,0 +1,99 @@
+<%- include('../layout/header')%>
+
+
+
+    <section class="userlist">
+        <h1 id="main-h1">User Management System</h1>
+        <div class="main">
+            <div class="user-record">
+                <div class="totle-user">
+                    <p>All User</p>
+                    <h1>
+                        <%length=Object.keys(userlist).length%>
+                            <%=length%>
+                    </h1>
+                </div>
+                <div class="admin">
+                    <p>Admin</p>
+                    <h1>
+                        <%length=Object.keys(admin).length%>
+                            <%=length%>
+                    </h1>
+                </div>
+                <div class="verified">
+                    <p>Verified User</p>
+                    <h1>
+                        <%length=Object.keys(verify).length%>
+                            <%=length%>
+                    </h1>
+                </div>
+                <div class="unverified">
+                    <p>Unverified User</p>
+                    <h1>
+                        <%length=Object.keys(unverify).length%>
+                            <%=length%>
+                    </h1>
+                </div>
+            </div>
+            <div class="all-user">
+                <h1 id="main-h1">All Users List</h1>
+                <div class="userdetail">
+                    <div class="grid">
+                        <%userlist.forEach(list=>{%>
+                            <div class="photo">
+                                <img src="user_img/<%=list.image%>" alt="">
+                            </div>
+                            <div class="info">
+                                <p>
+                                    Name: <%=list.name%>
+                                </p>
+                                <p>
+                                    Email: <%=list.email%>
+                                </p>
+                                <p>
+                                    Contact: <%=list.mobile%>
+                                </p>
+                                <p>
+                                    Admin: <%=list.is_admin%>
+                                </p>
+                                <p>
+                                    Verified: <%=list.is_varified%>
+                                </p>
+                                <p>
+                                    #: <%=list._id%>
+                                </p>
+                                <p class="btn">
+                                    <a href="/admin/delete?id=<%=list._id%>"><i
+                                            class="fa-sharp fa-solid fa-trash"></i></a>
+                                    <a href="/admin/edit?id=<%list._id%>"><i class="fa-solid fa-user-pen"></i></a>
+                                </p>
+                            </div>
+                            <% })%>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h1 id="main-h1">Admin Profile</h1>
+        <div class="admin-profile">
+            <%admin.forEach(i=>{%>
+                <div class="admin-photo">
+                    <img src="user_img/<%=i.image%>" alt="adsafdgfhg">
+                </div>
+                <div class="admin-info">
+                    <div class="cntr">
+                        <p>Name: <%=i.name%>
+                        </p>
+                        <p>Email: <%=i.email%>
+                        </p>
+                        <p>Role: Admin
+                        </p>
+                        <p>Mobile: <%=i.mobile%>
+                        </p>
+                    </div>
+                </div>
+                <% })%>
+        </div>
+        <a href="/admin/Add-user">add user</a>
+    </section>
+
+    <%- include('../layout/footer')%>

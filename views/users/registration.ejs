@@ -1,0 +1,61 @@
+<%- include('../layout/header')%>
+
+    <div class="form-body">
+
+        <form action="" method="post" enctype="multipart/form-data">
+            <div class="container">
+                <% if(typeof message !=='undefined' ){ %>
+                    <p style="color:rgb(17, 208, 7)">
+                        <%=message%>
+                    </p>
+                    <% } %>
+                        <% if(typeof usererr !=='undefined' ){ %>
+                            <p style="color:red">
+                                <%=usererr%>
+                            </p>
+                            <% } %>
+                                <form id="form" class="form" method="post" enctype="multipart/form-data">
+                                    <h2>Hey bub, ya gotta register!</h2>
+                                    <br>
+                                    <div class="form-control">
+                                        <label for="username">Username</label>
+                                        <input type="text" id="username" placeholder="Enter username" name="name" />
+                                        <small>Error message</small>
+                                    </div>
+                                    <div class="form-control">
+                                        <label for="email">Email</label>
+                                        <input type="text" id="email" placeholder="example@gmail.com" name="email" />
+                                        <small>Error message</small>
+                                    </div>
+                                    <div class="form-control">
+                                        <label for="password">Password</label>
+                                        <input type="password" id="password" placeholder="Enter password"
+                                            name="password" />
+                                        <small>Error message</small>
+                                    </div>
+                                    <div class="form-control">
+                                        <label for="password2">Confirm password</label>
+                                        <input type="password" id="password2" placeholder="Renter your password"
+                                            name="cpassword" />
+                                        <% if(typeof perr !=='undefined' ){ %>
+                                            <p style="color:rgb(247, 15, 31)">
+                                                <%=perr%>
+                                            </p>
+                                            <% } %>
+                                    </div>
+                                    <div class="form-control">
+                                        <label for="Image">User Image</label>
+                                        <input type="file" name="image" id="">
+                                    </div>
+                                    <div class="form-control">
+                                        <label for="mobile">Mobile</label>
+                                        <input type="tel" name="tel" required id="" placeholder="+91" value="+91">
+                                        <small>Error message</small>
+                                    </div>
+                                    <button type="submit" class="btn">Submit</button>
+                                </form>
+            </div>
+        </form>
+    </div>
+
+    <%- include('../layout/footer')%>
